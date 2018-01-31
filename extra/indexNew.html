@@ -1,0 +1,202 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="manifest" href="../site.webmanifest">
+    <link rel="apple-touch-icon" href="../icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <script language="javascript" type="text/javascript" src="../js/vendor/jquery-3.2.1.min.js"></script>
+    <style>
+
+
+
+        .blockStyle {
+            float: left;
+            height: 700px;
+            margin-left: 3%;
+            margin-right: 3%;
+            width: 18%;
+            border: 2px solid blue;
+            position: relative;
+
+        }
+
+        .text {
+            color: white;
+            font-size: 30px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .imageStyle {
+            float: top;
+            width:100%;
+            border: 5px solid black;
+            justify-content: center;
+            align-content: center;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+
+        }
+
+
+
+        .blockStyle:hover .overlay {
+            opacity: 1;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            transition: .5s ease;
+            background-color: black;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<!--<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>-->
+
+
+<!-- Add your site or application content here -->
+<!--<p>Hello world! This is HTML5 Boilerplate.</p>-->
+
+
+<div>
+    <h1>Welcome to Pictures!</h1>
+    <div id="containerStyle" class="listImageDiv">
+
+    </div>
+</div>
+
+
+<script id="source" language="javascript" type="text/javascript">
+
+
+    let imgData = [];
+
+
+    $(function () {
+        console.log("inside function");
+        $.ajax({
+            url: 'dbConn.php',
+            data: [],
+            dataType: 'json',
+            success: function(data) {
+                imgData = data;
+                console.log("imgData inside", imgData[0]);
+
+                $.map(imgData, function (strObj) {
+                    let curObj = JSON.parse(strObj);
+
+                    const largeDiv = document.createElement("div");
+
+
+                    const img = document.createElement("img");
+                    img.setAttribute('src', `${curObj["imageurl"]}`);
+                    img.setAttribute('class', "imageStyle");
+
+
+                    const name = document.createTextNode(`${curObj["firstname"].toUpperCase()}` + " " + `${curObj["lastname"].toUpperCase()}` + " (" + `${curObj["username"]}` + ")");
+                    name.setAttribute("class", "text");
+
+                    const smallDiv = document.createElement('div');
+                    smallDiv.setAttribute("class", "overlay");
+
+
+                    smallDiv.appendChild(name);
+
+
+                    largeDiv.appendChild(img);
+                    largeDiv.appendChild(smallDiv);
+
+
+                    largeDiv.setAttribute('class', "blockStyle");
+
+                    document.getElementsByClassName("listImageDiv")[0].appendChild(largeDiv);
+
+                });
+
+            },
+            error: function(error) {
+                console.log(error.responseText);
+            }
+        });
+    });
+
+
+    // function displayImages() {
+    //     // for (const i = 0; i < imgData.length; i) {
+    //     //
+    //     //     const curObj = imgData[i];
+    //     //     console.log(JSON.stringify(curObj));
+    //     //
+    //     //     document.getElementById("listImages").children[0].innerHTML +=
+    //     //     // <li>
+    //     //     //     <div>
+    //     //     //         <img src={curObj.imageurl}/>
+    //     //     //         <text>{curObj.firstname + curObj.lastname}</text>
+    //     //     //         <text>{curObj.username}</text>
+    //     //     //     </div>
+    //     //     // </li>;
+    //     // }i++;
+    //
+    //     $.map(imgData, function() {
+    //         const curObj = imgData[i];
+    //         console.log(JSON.stringify(curObj));
+    //
+    //         const newDiv = document.createElement("div");
+    //         const img = document.createElement("img");
+    //
+    //         const name = document.createTextNode(`${curObj.firstname}` + " " + `${curObj.lastname}`);
+    //         const username = document.createTextNode(`${curObj.username}`);
+    //
+    //         newDiv.appendChild(img);
+    //         newDiv.appendChild(name);
+    //         newDiv.appendChild(username);
+    //
+    //         document.getElementById("listImageDiv").appendChild(newDiv);
+    //     });
+    // }
+    //
+    // displayImages();
+
+</script>
+
+
+
+<script src="../js/vendor/modernizr-3.5.0.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>-->
+<script>window.jQuery || document.write('<script src="../js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
+<script src="../js/plugins.js"></script>
+<script src="../js/main.js"></script>
+
+<!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+<script>
+    window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+    ga('create','UA-XXXXX-Y','auto');ga('send','pageview')
+</script>
+<!--<script src="https://www.google-analytics.com/analytics.js" async defer></script>-->
+</body>
+</html>
